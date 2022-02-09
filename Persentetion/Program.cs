@@ -28,13 +28,6 @@ bulder.Services.AddDbContext<ApplicationDbContext>(options =>
 bulder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-bulder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-bulder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Persentetion")));
-
-bulder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-
 bulder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 bulder.Services.AddControllersWithViews();
@@ -42,6 +35,13 @@ bulder.Services.AddControllersWithViews();
 IMapper mapper = MappingConfing.RegisterMaps().CreateMapper();
 bulder.Services.AddSingleton(mapper);
 bulder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+bulder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(
+bulder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Persentetion")));
+
+bulder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 var app = bulder.Build();
