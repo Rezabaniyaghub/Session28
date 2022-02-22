@@ -40,6 +40,6 @@ namespace DataAccess.Entity
             });
         }
         public DbSet<School> Schools { get; set; }
-        public DbSet<ClassRoom> classRooms { get; set; }
+        public DbSet<ClassRoom> ClassRooms { get; set; }
     }
 }

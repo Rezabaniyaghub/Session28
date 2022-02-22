@@ -25,7 +25,7 @@ namespace Persentetion.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "classRooms",
+                name: "ClassRooms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,9 +36,9 @@ namespace Persentetion.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_classRooms", x => x.Id);
+                    table.PrimaryKey("PK_ClassRooms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_classRooms_Schools_SchoolId",
+                        name: "FK_ClassRooms_Schools_SchoolId",
                         column: x => x.SchoolId,
                         principalTable: "Schools",
                         principalColumn: "Id",
@@ -46,13 +46,13 @@ namespace Persentetion.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_classRooms_Name",
-                table: "classRooms",
+                name: "IX_ClassRooms_Name",
+                table: "ClassRooms",
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_classRooms_SchoolId",
-                table: "classRooms",
+                name: "IX_ClassRooms_SchoolId",
+                table: "ClassRooms",
                 column: "SchoolId");
 
             migrationBuilder.CreateIndex(
@@ -69,7 +69,7 @@ namespace Persentetion.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "classRooms");
+                name: "ClassRooms");
 
             migrationBuilder.DropTable(
                 name: "Schools");

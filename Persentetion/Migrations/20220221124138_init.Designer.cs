@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Persentetion.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220208181113_init")]
+    [Migration("20220221124138_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -49,7 +49,7 @@ namespace Persentetion.Migrations
 
                     b.HasIndex("SchoolId");
 
-                    b.ToTable("classRooms");
+                    b.ToTable("ClassRooms");
                 });
 
             modelBuilder.Entity("DataAccess.Entity.School", b =>

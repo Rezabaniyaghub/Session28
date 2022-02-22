@@ -1,53 +1,51 @@
 ﻿using Domain.Abstracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
 namespace Persentetion.Controllers
 {
-  #region Ctor
-    public class SchoolController : Controller
+    public class ClassRoomController : Controller
     {
-        private readonly ISchoolService _schoolService;
-        public SchoolController(ISchoolService schoolService)
+        #region [Ctor]
+        private readonly IClassRoomService _classRoomService;
+        public ClassRoomController(IClassRoomService classRoomService)
         {
-            _schoolService = schoolService;
-        }
-
+            _classRoomService = classRoomService;
+        } 
         #endregion
 
         #region Index
         [HttpGet]
-        [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int schoolId)
         {
-            var list = _schoolService.GetAll();
-            return View(list);
+            ViewBag.schoolId = schoolId;
+            var list = _classRoomService.GetAll(schoolId);
+             return View(list);
         }
 
         #endregion
 
         #region Create
         [HttpGet]
-        [Authorize(Roles ="admin")]
-        public ViewResult Create()
+        public ViewResult Create(int SchoolId)
         {
-            return View(new SchoolModel());
+            var model = _classRoomService.GetNewModelForCreate(SchoolId);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "admin")]
-        public IActionResult Create(SchoolModel model)
+        public IActionResult Create(ClassRoomModel model)
         {
-            var result = _schoolService.Insert(model);
+            var result = _classRoomService.Insert(model);
             if (result.IsSuccess)
             {
-                return RedirectToAction("Index");
+                return Redirect($"Index?schoolId={model.SchoolId}");
             }
             else
             {
                 ViewBag.Message = result.Message;
+                model.SchoolSelectList = _classRoomService.GetNewModelForCreate(model.SchoolId).SchoolSelectList;
                 return View(model);
             }
 
@@ -58,15 +56,15 @@ namespace Persentetion.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var model = _schoolService.GetById(id);
+            var model = _classRoomService.GetById(id);
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(SchoolModel model)
+        public IActionResult Edit(ClassRoomModel model)
         {
-            var result = _schoolService.Update(model);
+            var result = _classRoomService.Update(model);
             if (result.IsSuccess)
                 return RedirectToAction("Index");
             ViewBag.Message = result.Message;
@@ -79,14 +77,14 @@ namespace Persentetion.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var model = _schoolService.GetById(id);
+            var model = _classRoomService.GetById(id);
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Delete(SchoolModel model)
+        public IActionResult Delete(ClassRoomModel model)
         {
-            var result = _schoolService.Delete(model.Id);
+            var result = _classRoomService.Delete(model.Id);
             if (result.IsSuccess)
                 return RedirectToAction("Index");
             ViewBag.Message = result.Message;

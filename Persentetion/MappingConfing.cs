@@ -18,7 +18,10 @@ namespace Persentetion
                 config.CreateMap<School, SchoolModel>()
                .ForMember(f => f.CreateDate, mf => mf.MapFrom(d => d.CreateAt == null ? "Register Date not Exsit" 
                : Convert.ToDateTime(d.CreateAt).ToString("yyyy/MMM/dd")));
-            });
+
+               
+                config.CreateMap<ClassRoomModel, ClassRoom>().ReverseMap();
+            }); 
             return mappingConfig;
         }
 

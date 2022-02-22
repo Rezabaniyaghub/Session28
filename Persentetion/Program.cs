@@ -18,33 +18,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-var bulder = WebApplication.CreateBuilder(args);
-bulder.Services.AddTransient<ISchoolRepository, SchoolRepository>();
-bulder.Services.AddTransient<ISchoolService, SchoolService>();
+var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+     options.UseSqlServer(connectionString)); builder.Services.AddDefaultIdentity<IdentityUser>
+    (options => options.SignIn.RequireConfirmedAccount = true)
 
-bulder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-       bulder.Configuration.GetConnectionString("DefaultConnection")));
-bulder.Services.AddDatabaseDeveloperPageExceptionFilter();
+      .AddEntityFrameworkStores<ApplicationDbContext>(); 
+builder.Services.AddTransient<ISchoolRepository, SchoolRepository>();
+builder.Services.AddTransient<IClassRoomRepository, ClassRoomRepository>();
+builder.Services.AddTransient<ISchoolService, SchoolService>();
+builder.Services.AddTransient<IClassRoomService, ClassRoomService>();
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-bulder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-bulder.Services.AddControllersWithViews();
 
 IMapper mapper = MappingConfing.RegisterMaps().CreateMapper();
-bulder.Services.AddSingleton(mapper);
-bulder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-bulder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-bulder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Persentetion")));
+builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Persentetion")));
 
-bulder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-var app = bulder.Build();
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -56,6 +58,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

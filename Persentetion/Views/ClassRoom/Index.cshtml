@@ -1,0 +1,48 @@
+﻿ @model List<Models.ClassRoomModel>
+@{
+    ViewData["title"] = "ClassRoom list";
+    var schoolId = (int) ViewBag.schoolId;
+}
+<div class="row">
+
+
+    <a asp-action="Create" asp-route-schoolId="@schoolId" class="btn btn-primary btn-md" mb-2">
+        <i class="fas fa-plus"></i>
+        افزودن کلاس جدید
+    </a>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>School Name</th>
+                <th>AgeRange</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.SchoolId</td>
+                    <td>@item.AgeRange</td>
+                    <td>
+                        <a href="/ClassRoom/edit?id=@item.Id" class="btn btn-danger  btn-group ">
+                            <i class="fas fa-edit"> </i>
+                            ویرایش
+                        </a>
+
+                        <a asp-controller="ClassRoom" asp-action="Delete" asp-route-id=@item.Id class="btn btn-warning  btn-group ">
+                            <i class="fas fa-trash"> </i>
+                            حذف
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </>
+</div>
